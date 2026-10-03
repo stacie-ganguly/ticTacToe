@@ -23,15 +23,8 @@ int main () {
   int p1_score = 0;
   int p2_score = 0;
   //building the board
-  for(int i = 0; i < 3; i++) {
-    for (int j = 0; j < 3; j++) {
-      board[i][j] = ' ';
-      //cout << board[i][j];
-    }
-
-    cout << '\n';
-  }
-
+  redrawBoard(board);
+  printBoard(board);
   //main game loop
   while (still_playing == true) {
 
@@ -52,33 +45,31 @@ int main () {
 
 	    redrawBoard(board);
 	    printBoard(board);
-
-	    continue;
+	    checking_one_legal = false;
+	    break;
 	    
 	  } else if(isBoardFull(board)) {
 	    cout << "Its a tie! Board is full" << endl;
 	    //still_playing = false;
 	    cout<<"Current Scores - Player 1: " << p1_score << " | Player 2: " << p2_score << "\n\n";
+	    redrawBoard(board);
+	    printBoard(board);
+	    checking_one_legal = false;
+	    break;
 	  }
 	  
 	  checking_one_legal = false;
 	} else {
 	  cout << "Thats not a valid move. Try Again" << endl;
-	  //playerOneMove(row, col);
 
 	}
 
     }
-
-    if(!still_playing) {
-      break;
-    }
-    
-      
+     
       //player 2 moves
     checking_two_legal = true;
     
-      while (checking_two_legal == true) { 
+      while (checking_two_legal) { 
 	playerTwoMove(row, col);
 	if(isLegal(board, row, col)) {
 	  board[row][col] = 'O';
@@ -92,31 +83,23 @@ int main () {
 
 	    redrawBoard(board);
 	    printBoard(board);
-
-	    continue;
+	    checking_two_legal = false;
+	    break;
 	   
 	  } else if(isBoardFull(board)) {
 	    cout << "its a tie. board is full" << endl;
 	    cout<<"Current Scores - Player 1: " << p1_score << " | Player 2: " << p2_score << "\n\n";
+	    redrawBoard(board);
+	    printBoard(board);
+	    checking_two_legal = false;
 	  }
-
-	  
 	  checking_two_legal = false;
-	  checking_one_legal = true;
+	  
 	} else {
 	  cout << "Thats not a valid move. Try Again" << endl;
-	  //playerTwoMove(row, col);
-
 	}
-
       }
-	
-
-      //still_playing = false;
-
-  } 
-  //cout << "The board is: " << board;
-  
+  }   
   return 0;
 }
 
