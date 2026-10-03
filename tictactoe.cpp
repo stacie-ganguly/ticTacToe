@@ -65,6 +65,11 @@ int main () {
 	}
 
     }
+
+    
+    if(checkingWinner(board) != ' ' || isBoardFull(board)) {
+      continue;
+    }
      
       //player 2 moves
     checking_two_legal = true;
@@ -92,7 +97,7 @@ int main () {
 	    redrawBoard(board);
 	    printBoard(board);
 	    checking_two_legal = false;
-	    continue;
+	    break;
 	  }
 	  checking_two_legal = false;
 	  
