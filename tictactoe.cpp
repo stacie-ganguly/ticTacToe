@@ -5,8 +5,9 @@ bool isLegal(char board[3][3], int x, int y);
 void printBoard(char board[3][3]);
 void playerOneMove(int &r, int &c);
 void playerTwoMove(int &r, int &c);
-char checkingWinner(char board[3][3], int r, int c);
+char checkingWinner(char board[3][3]);
 bool isBoardFull(char board[3][3]);
+void redrawBoard(char board[3][3]);
 int main () {
   // make the array/board
   char board[3][3] = {0};
@@ -19,11 +20,12 @@ int main () {
   bool still_playing = true;
   bool checking_one_legal = true;
   bool checking_two_legal = true;
-
+  int p1_score = 0;
+  int p2_score = 0;
   //building the board
   for(int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
-      board[i][j] = 'a';
+      board[i][j] = ' ';
       //cout << board[i][j];
     }
 
@@ -38,16 +40,25 @@ int main () {
     checking_one_legal = true;
     while (checking_one_legal) { 
 	playerOneMove(row, col);
-	if(isLegal(board, row-1, col-1)) {
-	  board[row - 1][col - 1] = 'X';
+	if(isLegal(board, row, col)) {
+	  board[row][col] = 'X';
 	  printBoard(board);
 
-	  if(checkingWinner(board, row - 1, col - 1) == 'X') {
+	  if(checkingWinner(board) == 'X') {
 	    cout << "Player 1 wins!" << endl;
-	    still_playing = false;
+	    p1_score++;
+	    cout<<"Current Scores - Player 1: " << p1_score << " | Player 2: " << p2_score << "\n\n";
+	    //still_playing = false;
+
+	    redrawBoard(board);
+	    printBoard(board);
+
+	    continue;
+	    
 	  } else if(isBoardFull(board)) {
 	    cout << "Its a tie! Board is full" << endl;
-	    still_playing = false;
+	    //still_playing = false;
+	    cout<<"Current Scores - Player 1: " << p1_score << " | Player 2: " << p2_score << "\n\n";
 	  }
 	  
 	  checking_one_legal = false;
@@ -69,15 +80,24 @@ int main () {
     
       while (checking_two_legal == true) { 
 	playerTwoMove(row, col);
-	if(isLegal(board, row-1, col-1)) {
-	  board[row - 1][col - 1] = 'O';
+	if(isLegal(board, row, col)) {
+	  board[row][col] = 'O';
 	  printBoard(board);
 
-	  if(checkingWinner(board, row - 1, col - 1) == 'O') {
+	  if(checkingWinner(board) == 'O') {
 	    cout << "Player 2 wins!" << endl;
-	    still_playing = false;
+	    //still_playing = false
+	    p2_score++;
+	    cout<<"Current Scores - Player 1: " << p1_score << " | Player 2: " << p2_score << "\n\n";
+
+	    redrawBoard(board);
+	    printBoard(board);
+
+	    continue;
+	   
 	  } else if(isBoardFull(board)) {
 	    cout << "its a tie. board is full" << endl;
+	    cout<<"Current Scores - Player 1: " << p1_score << " | Player 2: " << p2_score << "\n\n";
 	  }
 
 	  
@@ -103,19 +123,19 @@ int main () {
 //functions
 
 //checking for a win
-char checkingWinner(char board[3][3], int r, int c) {
+char checkingWinner(char board[3][3]) {
 
   //checking rows
   for(int i = 0; i < 3; i++) {
-    if(board[r][0] != ' ' && board[r][0] == board[r][1] && board[r][1] == board[r][2]) {
-      return board[r][0];
+    if(board[i][0] != ' ' && board[i][0] == board[i][1] && board[i][1] == board[i][2]) {
+      return board[i][0];
     }
   }
 
   //checking columns
   for(int j = 0; j < 3; j++) {
-    if(board[0][c] != ' ' && board[0][c] == board[1][c] && board[1][c] == board[2][c]) {
-      return board[0][c];
+    if(board[0][j] != ' ' && board[0][j] == board[1][j] && board[1][j] == board[2][j]) {
+      return board[0][j];
     }
   }
 
@@ -132,12 +152,21 @@ char checkingWinner(char board[3][3], int r, int c) {
   return ' ';
 }
 
+//redraw the board AFTER a game has concluded
+void redrawBoard(char board[3][3]) {
+  for(int i = 0; i < 3; i++) {
+    for(int j = 0; j < 3; j++) {
+      board[i][j] = ' ';
+    }
+  }
+}
+
 //checking for a tie function
 
 bool isBoardFull(char board[3][3]) {
   for(int i = 0; i < 3; i ++) {
     for(int j = 0; j < 3; j++) {
-      if(board[i][j] == 'a') {
+      if(board[i][j] == ' ') {
 	return false;
       }
     }
@@ -152,8 +181,11 @@ void printBoard(char board[3][3]) {
     char row_label = 'A' + a;
     cout << row_label << " ";
     for(int b = 0; b < 3; b++) {
-      cout << board[a][b] << " ";
-     
+      if (board[a][b] == ' ') {
+	cout << "- ";
+      } else {
+	cout << board[a][b] << " ";
+      }
     }
     cout << endl;
   }
@@ -199,7 +231,7 @@ void playerTwoMove(int &r, int &c) {
 //check if legal
 
 bool isLegal(char board[3][3], int x, int y) {
-  if(x >= 0 && x <= 3 && y >= 0 && y <= 3 && board[x][y] == 'a') {
+  if(x >= 0 && x < 3 && y >= 0 && y < 3 && board[x][y] == ' ') {
     cout << "its valid!" << endl;
     return true;
   }
