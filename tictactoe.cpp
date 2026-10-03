@@ -46,7 +46,7 @@ int main () {
 	    redrawBoard(board);
 	    printBoard(board);
 	    checking_one_legal = false;
-	    break;
+	    continue;
 	    
 	  } else if(isBoardFull(board)) {
 	    cout << "Its a tie! Board is full" << endl;
@@ -55,7 +55,7 @@ int main () {
 	    redrawBoard(board);
 	    printBoard(board);
 	    checking_one_legal = false;
-	    break;
+	    continue;
 	  }
 	  
 	  checking_one_legal = false;
@@ -84,7 +84,7 @@ int main () {
 	    redrawBoard(board);
 	    printBoard(board);
 	    checking_two_legal = false;
-	    break;
+	    continue;
 	   
 	  } else if(isBoardFull(board)) {
 	    cout << "its a tie. board is full" << endl;
@@ -92,6 +92,7 @@ int main () {
 	    redrawBoard(board);
 	    printBoard(board);
 	    checking_two_legal = false;
+	    continue;
 	  }
 	  checking_two_legal = false;
 	  
